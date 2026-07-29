@@ -3,7 +3,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import { z } from 'zod';
 
 type Karyawan = {
-  id: string;
+  id: number;
   nama: string;
   posisi: string;
   divisi: string;
@@ -12,27 +12,29 @@ type Karyawan = {
 
 const karyawan: Karyawan[] = [
   {
-    id: '3f8a1c2e-9b4d-4a71-8e05-16c7d2f9b430',
+    id: 1,
     nama: 'William Bennett',
     posisi: 'Backend Engineer',
     divisi: 'Engineering',
     gaji: 15000000,
   },
   {
-    id: '7d21b5f0-4c83-49ae-b6d2-0a5e83c14e77',
+    id: 2,
     nama: 'Charlotte Hayes',
     posisi: 'UI/UX Designer',
     divisi: 'Product',
     gaji: 12000000,
   },
   {
-    id: 'c95e6a38-2f17-4bd9-9c40-e831f7a20d55',
+    id: 3,
     nama: 'Daniel Foster',
     posisi: 'HR Generalist',
     divisi: 'People',
     gaji: 10000000,
   },
 ];
+
+let nextId = karyawan.length + 1;
 
 const json = (data: unknown) => ({
   content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }],
@@ -59,7 +61,7 @@ server.registerTool(
     title: 'Get Karyawan',
     description: 'Ambil satu karyawan berdasarkan id.',
     inputSchema: z.object({
-      id: z.string().uuid().describe('UUID karyawan'),
+      id: z.number().int().describe('ID karyawan'),
     }),
   },
   async ({ id }) => {
@@ -82,7 +84,7 @@ server.registerTool(
     }),
   },
   async ({ nama, posisi, divisi, gaji }) => {
-    const baru: Karyawan = { id: crypto.randomUUID(), nama, posisi, divisi, gaji };
+    const baru: Karyawan = { id: nextId++, nama, posisi, divisi, gaji };
     karyawan.push(baru);
     return json({ message: 'Karyawan berhasil dibuat', data: baru });
   },
@@ -94,7 +96,7 @@ server.registerTool(
     title: 'Update Karyawan',
     description: 'Ubah data karyawan. Field yang tidak diisi tidak berubah.',
     inputSchema: z.object({
-      id: z.string().uuid().describe('UUID karyawan yang mau diubah'),
+      id: z.number().int().describe('ID karyawan yang mau diubah'),
       nama: z.string().optional(),
       posisi: z.string().optional(),
       divisi: z.string().optional(),
@@ -118,7 +120,7 @@ server.registerTool(
     title: 'Delete Karyawan',
     description: 'Hapus karyawan berdasarkan id.',
     inputSchema: z.object({
-      id: z.string().uuid().describe('UUID karyawan yang mau dihapus'),
+      id: z.number().int().describe('ID karyawan yang mau dihapus'),
     }),
   },
   async ({ id }) => {

@@ -11,12 +11,12 @@ Server ini mengekspos 5 tools MCP yang bisa dipanggil Claude untuk mengelola dat
 | Tool | Deskripsi | Input |
 |---|---|---|
 | `list_karyawan` | Ambil semua data karyawan | - |
-| `get_karyawan` | Ambil satu karyawan berdasarkan `id` | `id` (uuid) |
+| `get_karyawan` | Ambil satu karyawan berdasarkan `id` | `id` (number) |
 | `create_karyawan` | Tambah karyawan baru | `nama`, `posisi`, `divisi`, `gaji` |
 | `update_karyawan` | Ubah data karyawan (field yang tidak diisi tidak berubah) | `id`, `nama?`, `posisi?`, `divisi?`, `gaji?` |
-| `delete_karyawan` | Hapus karyawan berdasarkan `id` | `id` (uuid) |
+| `delete_karyawan` | Hapus karyawan berdasarkan `id` | `id` (number) |
 
-Setiap karyawan punya field: `id` (uuid), `nama`, `posisi`, `divisi`, `gaji`.
+Setiap karyawan punya field: `id` (number, auto-increment), `nama`, `posisi`, `divisi`, `gaji`.
 
 ## File utama
 
@@ -55,7 +55,7 @@ Jika muncul log `weather MCP server running on stdio` di terminal, server sudah 
 Jalankan perintah berikut dari root project ini (ganti path sesuai lokasi clone di komputer kamu):
 
 ```bash
-claude mcp add karyawan-mcp-demo -- node /path/ke/mcp-demo/src/index.ts
+claude mcp add karyawan-mcp-demo -- node ./src/index.ts
 ```
 
 Cek apakah server sudah terdaftar:
